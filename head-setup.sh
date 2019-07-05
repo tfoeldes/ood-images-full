@@ -10,6 +10,7 @@ groupadd ood
 useradd --create-home --gid ood ood
 echo -n "ood" | passwd --stdin ood
 echo -n "root" | passwd --stdin root
+
 sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 systemctl restart sshd
 

@@ -1,0 +1,42 @@
+version: "3.7"
+services:
+  ldap:
+    container_name: ldap
+    restart: unless-stopped
+    image: osixia/openldap:1.2.4
+    command: "--copy-service --loglevel debug"
+    networks:
+      - ldap
+    volumes:
+     - ldap-data:/var/lib/ldap
+     - /vagrant/30-directories.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/30-directories.ldif
+
+  lam:
+    container_name: lam
+    restart: unless-stopped
+    image: ldapaccountmanager/lam:stable
+    ports:
+      - "8081:80"
+    networks:
+      - ldap
+    volumes:
+      - "/vagrant/lam.conf:/usr/share/ldap-account-manager/config/lam.conf"
+
+  keycloak:
+    container_name: keycloak
+    restart: unless-stopped
+    image: jboss/keycloak
+    ports:
+      - "8080:8080"
+    networks:
+      - ldap
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    
+volumes:
+  ldap-data:
+
+
+networks:
+  ldap:
