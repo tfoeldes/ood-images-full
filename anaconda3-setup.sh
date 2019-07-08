@@ -6,16 +6,18 @@ yum install -y tcl-devel
 
 cd
 
+if [[ ! -f Anaconda3-2019.03-Linux-x86_64.sh ]]
+then 
 curl -O https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
 
 chmod +x Anaconda3-2019.03-Linux-x86_64.sh
 
 ./Anaconda3-2019.03-Linux-x86_64.sh -b -p /opt/anaconda3
-
+fi
 #Create python Modulefile
 
 cd /usr/local/Modules/modulefiles
-mkdir python
+mkdir -p python
 cd python
 
 cat <<EOF >anaconda3

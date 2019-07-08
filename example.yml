@@ -8,3 +8,9 @@ v2:
     adapter: "slurm"
     bin: "/opt/slurm/bin"
     conf: "/opt/slurm/etc/slurm.conf"
+  batch_connect:
+    basic:
+      script_wrapper: |
+        module purge
+        %s
+      set_host: "host=$(hostname -A | awk '{print $1}')"

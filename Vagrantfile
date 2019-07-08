@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
+  config.vm.provider "virtualbox"
   config.vm.box = "centos/7"
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   config.vm.synced_folder "./ood-home", "/home/ood", type: "virtualbox", mount_options: ["uid=1001","gid=1001"]
@@ -26,6 +27,9 @@ Vagrant.configure(2) do |config|
   config.vm.define "head", primary: false, autostart: true do |head|
     head.vm.network "private_network", ip: "10.0.0.101"
     head.vm.provision "shell", path: "head-setup.sh"
+    head.vm.provision "shell", inline: "yum install -y epel-release"
+    head.vm.provision "shell", inline: "yum install -y nmap-ncat python-pip"
+    head.vm.provision "shell", inline: "pip install websockify"
     head.vm.provision "shell", path: "environment-module-setup.sh"
     head.vm.provision "shell", path: "anaconda3-setup.sh"
     head.vm.provision "shell", inline: "hostnamectl set-hostname head"
