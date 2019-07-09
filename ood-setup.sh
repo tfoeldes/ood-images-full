@@ -25,9 +25,11 @@ mkdir -p /etc/ood/config/clusters.d
 mkdir -p /etc/ood/config/apps/shell
 
 #Enable App Development
-if [[! -f /var/www/ood/apps/dev/ood/gateway ]]
+if [[ ! -f /var/www/ood/apps/dev/ood/gateway ]]
 then
-sudo mkdir -p /var/www/ood/apps/dev/ood
+mkdir -p /var/www/ood/apps/dev/ood
 cd /var/www/ood/apps/dev/ood
-sudo ln -s /home/ood/ondemand/dev gateway
+ln -sf /home/ood/ondemand/dev gateway
 fi
+
+systemctl restart httpd24-httpd

@@ -17,7 +17,5 @@ then
     chmod +x /usr/local/bin/docker-compose
 fi
 
-
-
 mkdir -p /etc/docker/compose/keycloak/
 cp /vagrant/docker-compose.yml /etc/docker/compose/keycloak/

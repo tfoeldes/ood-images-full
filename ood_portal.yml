@@ -83,6 +83,9 @@
 #  - 'AuthUserFile "/opt/rh/httpd24/root/etc/httpd/.htpasswd"'
 #  - 'RequestHeader unset Authorization'
 #  - 'Require valid-user'
+auth:
+  - 'AuthType openid-connect'
+  - 'Require valid-user'
 
 # Redirect user to the following URI when accessing root URI
 # Example:
@@ -134,7 +137,7 @@
 #     logout_redirect: '/oidc?logout=https%3A%2F%2Fwww.example.com'
 # Default: '/pun/sys/dashboard/logout' (the Dashboard app provides a simple
 # HTML page explaining logout to the user)
-#logout_redirect: '/pun/sys/dashboard/logout'
+logout_redirect: '/oidc?logout=https%3A%2F%2Flocalhost%3A8080'
 
 #
 # Reverse proxy to backend nodes
@@ -145,7 +148,7 @@
 #     host_regex: '[\w.-]+\.example\.com'
 # Default: '[^/]+' (allow reverse proxying to all hosts, this allows external
 # hosts as well)
-host_regex: '[^/]+'
+host_regex: 'head'
 
 # Sub-uri used to reverse proxy to backend web server running on node that
 # knows the full URI path
@@ -199,7 +202,7 @@ rnode_uri: '/rnode'
 # Example:
 #     oidc_uri: '/oidc'
 # Default: null (disable OpenID Connect support)
-#oidc_uri: null
+oidc_uri: '/oidc'
 
 # Sub-uri user is redirected to if they are not authenticated. This is used to
 # *discover* what ID provider the user will login through.
@@ -235,11 +238,11 @@ rnode_uri: '/rnode'
 # Default: null (display error to user if mapping fails)
 #register_root: null
 
-host_regex: 'head'
-auth:
- - 'AuthType Basic'
- - 'AuthName "private"'
- - 'AuthBasicProvider dbm'
- - 'AuthDBMUserFile "/opt/rh/httpd24/root/etc/httpd/.htpasswd.dbm"'
- - 'RequestHeader unset Authorization'
- - 'Require valid-user'
+#host_regex: 'head'
+#auth:
+#  - 'AuthType Basic'
+#  - 'AuthName "private"'
+#  - 'AuthBasicProvider dbm'
+#  - 'AuthDBMUserFile "/opt/rh/httpd24/root/etc/httpd/.htpasswd.dbm"'
+#  - 'RequestHeader unset Authorization'
+#  - 'Require valid-user'

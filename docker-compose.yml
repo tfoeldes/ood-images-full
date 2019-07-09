@@ -1,41 +1,68 @@
 version: "3.7"
 services:
   ldap:
-    container_name: ldap
+    #container_name: ldap
     restart: unless-stopped
     image: osixia/openldap:1.2.4
     command: "--copy-service --loglevel debug"
+    ports:
+      - "389:389"
     networks:
       - ldap
     volumes:
      - ldap-data:/var/lib/ldap
+     - ldap-config:/etc/ldap/slapd.d
      - /vagrant/30-directories.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/30-directories.ldif
 
   lam:
-    container_name: lam
+    #container_name: lam
     restart: unless-stopped
     image: ldapaccountmanager/lam:stable
     ports:
-      - "8081:80"
+      - "8080:80"
     networks:
       - ldap
     volumes:
       - "/vagrant/lam.conf:/usr/share/ldap-account-manager/config/lam.conf"
 
+#  mysql:
+#    image: mysql:5.7
+#    volumes:
+#      - mysql-data:/var/lib/mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: keycloak
+#      MYSQL_USER: keycloak
+#      MYSQL_PASSWORD: password
+
+
   keycloak:
-    container_name: keycloak
+    #container_name: keycloak
     restart: unless-stopped
     image: jboss/keycloak
     ports:
-      - "8080:8080"
+      - "80:8080"
     networks:
       - ldap
+    volumes:
+      - keycloak-data:/opt/jboss/keycloak/standalone/data
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-    
+#      DB_VENDOR: MYSQL
+#      DB_ADDR: mysql
+#      DB_DATABASE: keycloak
+#      DB_USER: keycloak
+#      DB_PASSWORD: password
+#      depends_on: mysql
+
+
+
 volumes:
   ldap-data:
+  ldap-config:
+  keycloak-data:
+  mysql-data:
 
 
 networks:

@@ -6,10 +6,9 @@ Vagrant.configure(2) do |config|
   config.vm.box = "centos/7"
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   config.vm.synced_folder "./ood-home", "/home/ood", type: "virtualbox", mount_options: ["uid=1001","gid=1001"]
-    config.vm.synced_folder ".", "/modules", type: "virtualbox"
 
   config.vm.define "ood", primary: true, autostart: true do |ood|
-    ood.vm.network "forwarded_port", guest: 80, host: 8080
+    #ood.vm.network "forwarded_port", guest: 80, host: 8080
     ood.vm.network "private_network", ip: "10.0.0.100"
     ood.vm.provision "shell", inline: <<-SHELL
       yum install -y epel-release centos-release-scl lsof sudo
@@ -42,13 +41,14 @@ Vagrant.configure(2) do |config|
   end
   config.vm.define "auth", primary: false, autostart: true do |auth|
     auth.vm.network "private_network", ip: "10.0.0.102"
-    auth.vm.network "forwarded_port", guest: 8080, host: 8090
-    auth.vm.network "forwarded_port", guest: 8081, host: 8091
+    #auth.vm.network "forwarded_port", guest: 8080, host: 8090
+    #auth.vm.network "forwarded_port", guest: 8081, host: 8091
     auth.vm.provision "shell", path: "auth-setup.sh"
     auth.vm.provision "shell", inline: "hostnamectl set-hostname auth"
     auth.vm.provision "shell", inline: "cp -f /vagrant/hosts /etc/hosts"
     auth.vm.provision "shell", inline: "systemctl enable docker"
     auth.vm.provision "shell", inline: "systemctl start docker"
+    auth.vm.provision "shell", inline: "/usr/local/bin/docker-compose -f /etc/docker/compose/keycloak/docker-compose.yml down || true"
     auth.vm.provision "shell", inline: "/usr/local/bin/docker-compose -f /etc/docker/compose/keycloak/docker-compose.yml up -d"
 
 
