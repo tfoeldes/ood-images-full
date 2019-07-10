@@ -32,6 +32,7 @@ Vagrant.configure(2) do |config|
     ood.vm.provision "shell", inline: "cp -f /vagrant/hosts /etc/hosts"
     ood.vm.provision "shell", inline: "cp -f /vagrant/ood/example.yml /etc/ood/config/clusters.d/example.yml"
     ood.vm.provision "shell", path: "slurm-setup.sh"
+    ood.vm.provision "shell", path: "ood/oidc-setup.sh"
   end
   
   config.vm.define "head", primary: false, autostart: true do |head|
@@ -74,8 +75,11 @@ Vagrant.configure(2) do |config|
     auth.vm.provision "shell", inline: "systemctl start docker"
     auth.vm.provision "shell", inline: "/usr/local/bin/docker-compose -f /etc/docker/compose/keycloak/docker-compose.yml down || true"
     auth.vm.provision "shell", inline: "/usr/local/bin/docker-compose -f /etc/docker/compose/keycloak/docker-compose.yml up -d"
-
-
+    auth.vm.provision "shell", inline: <<-EOF
+      docker cp /vagrant/auth/oicd-setup.sh keycloak_keycloak_1:/tmp/oicd-setup.sh
+      docker cp /vagrant/auth/ondemand-clients.json keycloak_keycloak_1:/tmp/ondemand-clients.json
+      docker exec keycloak_keycloak_1 /tmp/oicd-setup.sh
+    EOF
   end
 end
 
