@@ -18,4 +18,4 @@ then
 fi
 
 mkdir -p /etc/docker/compose/keycloak/
-cp /vagrant/docker-compose.yml /etc/docker/compose/keycloak/
+cp /vagrant/auth/docker-compose.yml /etc/docker/compose/keycloak/

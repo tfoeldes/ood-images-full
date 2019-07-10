@@ -9,10 +9,12 @@ services:
       - "389:389"
     networks:
       - ldap
+    environment:
+      LDAP_TLS_VERIFY_CLIENT: try 
     volumes:
      - ldap-data:/var/lib/ldap
      - ldap-config:/etc/ldap/slapd.d
-     - /vagrant/30-directories.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/30-directories.ldif
+     - /vagrant/auth/30-directories.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/30-directories.ldif
 
   lam:
     #container_name: lam
@@ -23,7 +25,7 @@ services:
     networks:
       - ldap
     volumes:
-      - "/vagrant/lam.conf:/usr/share/ldap-account-manager/config/lam.conf"
+      - "/vagrant/auth/lam.conf:/usr/share/ldap-account-manager/config/lam.conf"
 
 #  mysql:
 #    image: mysql:5.7

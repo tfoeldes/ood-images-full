@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install new OOD Portal config
-cp -f /vagrant/ood_portal.yml /etc/ood/config/ood_portal.yml
+cp -f /vagrant/ood/ood_portal.yml /etc/ood/config/ood_portal.yml
 /opt/ood/ood-portal-generator/sbin/update_ood_portal
 
 # Disable SELinux
