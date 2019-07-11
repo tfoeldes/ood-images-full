@@ -25,9 +25,9 @@ Vagrant.configure(2) do |config|
       
     SHELL
     ood.vm.provision "shell", inline: "systemctl enable sssd"
-    ood.vm.provision "shell", inline: "systemctl start sssd"
+    ood.vm.provision "shell", inline: "systemctl restart sssd"
     ood.vm.provision "shell", inline: "systemctl enable httpd24-httpd"
-    ood.vm.provision "shell", inline: "systemctl start httpd24-httpd"
+    ood.vm.provision "shell", inline: "systemctl restart httpd24-httpd"
     ood.vm.provision "shell", inline: "hostnamectl set-hostname ood"
     ood.vm.provision "shell", inline: "cp -f /vagrant/hosts /etc/hosts"
     ood.vm.provision "shell", inline: "cp -f /vagrant/ood/example.yml /etc/ood/config/clusters.d/example.yml"
@@ -46,7 +46,7 @@ Vagrant.configure(2) do |config|
       chmod 600 /etc/sssd/sssd.conf
     SHELL
     head.vm.provision "shell", inline: "systemctl enable sssd"
-    head.vm.provision "shell", inline: "systemctl start sssd"
+    head.vm.provision "shell", inline: "systemctl restart sssd"
     head.vm.provision "shell", inline: "yum install -y epel-release"
     head.vm.provision "shell", inline: "yum install -y nmap-ncat python-pip"
     head.vm.provision "shell", inline: "curl -o /etc/yum.repos.d/turbovnc.repo https://turbovnc.org/pmwiki/uploads/Downloads/TurboVNC.repo"
@@ -59,9 +59,9 @@ Vagrant.configure(2) do |config|
     head.vm.provision "shell", inline: "cp -f /vagrant/hosts /etc/hosts"
     head.vm.provision "shell", path: "slurm-setup.sh"
     head.vm.provision "shell", inline: "systemctl enable slurmd"
-    head.vm.provision "shell", inline: "systemctl start slurmd"
+    head.vm.provision "shell", inline: "systemctl restart slurmd"
     head.vm.provision "shell", inline: "systemctl enable slurmctld"
-    head.vm.provision "shell", inline: "systemctl start slurmctld"
+    head.vm.provision "shell", inline: "systemctl restart slurmctld"
   end
   
   config.vm.define "auth", primary: false, autostart: true do |auth|
@@ -79,6 +79,8 @@ Vagrant.configure(2) do |config|
       docker cp /vagrant/auth/oicd-setup.sh keycloak_keycloak_1:/tmp/oicd-setup.sh
       docker cp /vagrant/auth/ondemand-clients.json keycloak_keycloak_1:/tmp/ondemand-clients.json
       docker exec keycloak_keycloak_1 /tmp/oicd-setup.sh
+      docker cp keycloak_keycloak_1:/tmp/secret /tmp/secret
+      sed -i "s/^OIDCClientSecret.*/OIDCClientSecret \"`cat /tmp/secret`\"/" /vagrant/ood/auth_openidc.conf
     EOF
   end
 end

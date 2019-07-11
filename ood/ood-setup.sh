@@ -17,6 +17,10 @@ echo -n "root" | passwd --stdin root
 
 scl enable httpd24 -- htdbm -bc /opt/rh/httpd24/root/etc/httpd/.htpasswd.dbm ood ood
 
+#Enable SSH Password Login
+sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+systemctl restart sshd
+
 #Change Keymap to German
 localectl set-keymap de
 
