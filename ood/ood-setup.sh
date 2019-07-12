@@ -34,3 +34,14 @@ ln -sf /home/ood/ondemand/dev gateway
 fi
 
 
+mkdir -p /etc/ood/config/apps/bc_desktop
+
+cat <<EOF > /etc/ood/config/apps/bc_desktop/xfce.yml
+
+title: "Xfce Desktop"
+cluster: "example"
+attributes:
+  desktop: "xfce"
+EOF
+
+
