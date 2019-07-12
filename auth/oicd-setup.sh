@@ -14,7 +14,7 @@ $KCADM create components -r ondemand -s name=ldap -s providerId=ldap -s provider
 
 # Add OnDemand as a client
 CID=$($KCADM create clients -r ondemand -f /tmp/ondemand-clients.json -i)
-$KCADM  get -r ondemand clients/$CID/client-secret | sed -n '/value/p' | sed  's/^.* "//' | sed 's/"//' > /tmp/secret
+$KCADM  get -r ondemand clients/$CID/client-secret | sed -n '/value/p' | sed  's/^.* "//; s/"//' > /tmp/secret
 # Add Custom Theme
 #cd ../themes
 #curl -LOk  https://github.com/OSC/keycloak-theme/archive/v0.0.1.zip

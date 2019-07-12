@@ -9,10 +9,7 @@ setenforce 0
 sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux
 sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 
-# Add user to system and apache basic auth
-groupadd ood
-useradd --create-home --gid ood ood
-echo -n "ood" | passwd --stdin ood
+
 echo -n "root" | passwd --stdin root
 
 scl enable httpd24 -- htdbm -bc /opt/rh/httpd24/root/etc/httpd/.htpasswd.dbm ood ood
@@ -36,4 +33,4 @@ cd /var/www/ood/apps/dev/ood
 ln -sf /home/ood/ondemand/dev gateway
 fi
 
-systemctl restart httpd24-httpd
+

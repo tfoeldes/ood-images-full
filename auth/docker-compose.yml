@@ -2,7 +2,7 @@ version: "3.7"
 services:
   ldap:
     #container_name: ldap
-    restart: unless-stopped
+    restart: always
     image: osixia/openldap:1.2.4
     command: "--copy-service --loglevel debug"
     ports:
@@ -15,10 +15,10 @@ services:
      - ldap-data:/var/lib/ldap
      - ldap-config:/etc/ldap/slapd.d
      - /vagrant/auth/30-directories.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/30-directories.ldif
-
+     - /vagrant/auth/40-ood-user.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-ood-user.ldif
   lam:
     #container_name: lam
-    restart: unless-stopped
+    restart: always
     image: ldapaccountmanager/lam:stable
     ports:
       - "8080:80"
@@ -40,7 +40,7 @@ services:
 
   keycloak:
     #container_name: keycloak
-    restart: unless-stopped
+    restart: always
     image: jboss/keycloak
     ports:
       - "80:8080"

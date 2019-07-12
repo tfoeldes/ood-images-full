@@ -1,0 +1,23 @@
+dn: cn=ood,ou=group,dc=example,dc=org
+changetype: add
+objectclass: posixGroup
+cn: ood
+gidnumber: 10000
+
+
+dn: uid=ood,ou=People,dc=example,dc=org
+changetype: add
+objectClass: top
+objectclass: inetOrgPerson
+objectclass: organizationalPerson
+objectclass: person
+objectclass: posixAccount
+cn: ood
+sn: ood
+uid: ood
+uidNumber: 10000
+gidNumber: 10000
+homeDirectory: /home/ood
+loginShell: /bin/bash
+gecos: ood
+userpassword: {SSHA}Pfe3o8tkR4uON8p3IGP/vVF6nQXkjcpG
