@@ -1,0 +1,5 @@
+
+title: "Xfce Desktop"
+cluster: "example"
+attributes:
+  desktop: "xfce"

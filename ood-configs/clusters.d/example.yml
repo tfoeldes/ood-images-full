@@ -1,0 +1,22 @@
+---
+v2:
+  metadata:
+    title: "Example Cluster"
+  login:
+    host: "head"
+  job:
+    adapter: "slurm"
+    bin: "/opt/slurm/bin"
+    conf: "/opt/slurm/etc/slurm.conf"
+  batch_connect:
+    basic:
+      script_wrapper: |
+        module purge
+        %s
+      set_host: "host=$(hostname -A | awk '{print $1}')"
+    vnc:
+      script_wrapper: |
+        module purge
+        export PATH="/opt/TurboVNC/bin:$PATH"
+        export WEBSOCKIFY_CMD="/bin/websockify"
+        %s

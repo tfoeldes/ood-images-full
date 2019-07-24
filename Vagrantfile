@@ -4,9 +4,12 @@
 Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox"
   config.vm.box = "centos/7"
+
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   config.vm.synced_folder "./ood-home", "/home/ood", type: "virtualbox", mount_options: ["uid=10000","gid=10000"]
-  
+  config.vm.synced_folder "./ood-configs", "/etc/ood/config", type: "virtualbox"
+  config.vm.synced_folder "./public", "/var/www/ood/public", type: "virtualbox"
+
   config.vm.define "auth", primary: false, autostart: true do |auth|
     auth.vm.network "private_network", ip: "10.0.0.102"
     #auth.vm.network "forwarded_port", guest: 8080, host: 8090
